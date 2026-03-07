@@ -1,0 +1,385 @@
+@use "sass:color";
+@use "../../styles/variables" as *;
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: $bg-primary;
+  color: $text-primary;
+  overflow: hidden;
+  transition: background-color 0.3s, color 0.3s;
+
+  @include dark {
+    background-color: $dark-bg-primary;
+    color: $dark-text-primary;
+  }
+
+  @include pure-black {
+    background-color: #000000;
+  }
+
+  &.standalone {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+.sidebar {
+  width: 200px;
+  background-color: $bg-secondary;
+  border-right: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+
+  @include dark {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+
+  @include pure-black {
+    background-color: #111111;
+    border-color: #222222;
+  }
+
+  .sidebarHeader {
+    padding: 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    span {
+      font-size: 14px;
+      font-weight: 800;
+      color: $text-primary;
+
+      @include dark {
+        color: $dark-text-primary;
+      }
+    }
+
+    svg {
+      color: $accent-amber;
+    }
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+  gap: 4px;
+
+  .navItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    color: $text-secondary;
+    transition: all 0.2s ease;
+    text-align: left;
+
+    @include dark {
+      color: $dark-text-secondary;
+    }
+
+    span {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    svg {
+      opacity: 0.7;
+    }
+
+    &:hover {
+      background-color: rgba($accent-amber, 0.05);
+      color: $accent-amber;
+    }
+
+    &.active {
+      background-color: $accent-amber;
+      color: #ffffff;
+
+      svg {
+        opacity: 1;
+      }
+
+      @include dark {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $bg-primary;
+  position: relative;
+
+  @include dark {
+    background-color: $dark-bg-primary;
+  }
+
+  @include pure-black {
+    background-color: #000000;
+  }
+}
+
+.header {
+  height: 48px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 16px;
+  flex-shrink: 0;
+
+  .closeBtn {
+    padding: 6px;
+    background: transparent;
+    border: none;
+    color: $text-secondary;
+    cursor: pointer;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: $bg-secondary;
+      color: $text-primary;
+
+      @include dark {
+        background-color: $dark-bg-secondary;
+        color: $dark-text-primary;
+      }
+    }
+  }
+}
+
+.scrollArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $border-color;
+    border-radius: 3px;
+
+    @include dark {
+      background-color: $dark-border-color;
+    }
+
+    @include pure-black {
+      background-color: #333333;
+    }
+  }
+}
+
+.tabPane {
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section {
+  margin-bottom: 32px;
+
+  .sectionTitle {
+    font-size: 11px;
+    font-weight: 800;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+    display: block;
+
+    @include dark {
+      color: $dark-text-secondary;
+    }
+  }
+}
+
+.formGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-primary;
+
+      @include dark {
+        color: $dark-text-primary;
+      }
+    }
+
+    input[type="number"],
+    input[type="time"],
+    select {
+      padding: 8px 12px;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      font-size: 13px;
+      background-color: $bg-primary;
+      color: $text-primary;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: $accent-amber;
+      }
+
+      @include dark {
+        background-color: $dark-bg-secondary;
+        border-color: $dark-border-color;
+        color: $dark-text-primary;
+      }
+    }
+  }
+}
+
+.rangeInput {
+  width: 100%;
+  height: 6px;
+  background: $bg-secondary;
+  border-radius: 3px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: $accent-amber;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  @include dark {
+    background: $dark-bg-secondary;
+  }
+}
+
+.colorPickerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  background-color: $bg-secondary;
+
+  @include dark {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border-color;
+  }
+
+  input[type="color"] {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+
+    &::-webkit-color-swatch-wrapper { padding: 0; }
+    &::-webkit-color-swatch { border: none; border-radius: 4px; }
+  }
+
+  span {
+    font-size: 12px;
+    font-family: monospace;
+    color: $text-secondary;
+
+    @include dark {
+      color: $dark-text-secondary;
+    }
+  }
+}
+
+.footer {
+  height: 64px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 40px;
+  border-top: 1px solid $border-color;
+  flex-shrink: 0;
+  background-color: $bg-primary;
+  gap: 16px;
+
+  @include dark {
+    background-color: $dark-bg-primary;
+    border-color: $dark-border-color;
+  }
+
+  .successMessage {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: $accent-emerald;
+    font-size: 13px;
+    font-weight: 600;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .saveBtn {
+    padding: 10px 24px;
+    background-color: $accent-amber;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust($accent-amber, $lightness: -10%);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background-color: $accent-emerald;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}

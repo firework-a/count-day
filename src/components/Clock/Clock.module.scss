@@ -1,0 +1,26 @@
+@use "../../styles/variables" as *;
+
+.clockBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 20px;
+  flex-shrink: 0;
+
+  .clock {
+    font-size: 28px;
+    font-weight: 800;
+    color: inherit;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .date {
+    font-size: 10px;
+    font-weight: 600;
+    color: inherit;
+    opacity: 0.8;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+}

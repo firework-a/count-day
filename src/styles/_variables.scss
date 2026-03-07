@@ -1,0 +1,62 @@
+// Global Variables & Mixins
+$bg-primary: #ffffff;
+$bg-secondary: #f1f5f9;
+$text-primary: #0f172a;
+$text-secondary: #64748b;
+$border-color: #e2e8f0;
+
+$accent-blue: #3b82f6;
+$accent-emerald: #10b981;
+$accent-amber: #302922;
+$accent-rose: #f43f5e;
+
+// Dark Mode
+$dark-bg-primary: #000000;
+$dark-bg-secondary: #111111;
+$dark-text-primary: #ffffff;
+$dark-text-secondary: #a1a1aa;
+$dark-border-color: #27272a;
+
+@mixin dark {
+  :global([data-theme="dark"]) &,
+  :global([data-theme="auto"]) & {
+    @media (prefers-color-scheme: dark) {
+      @content;
+    }
+  }
+  :global([data-theme="dark"]) & {
+    @content;
+  }
+}
+
+@mixin pure-black {
+  :global([data-pure-black="true"][data-theme="dark"]) &,
+  :global([data-pure-black="true"][data-theme="auto"]) & {
+    @media (prefers-color-scheme: dark) {
+      @content;
+    }
+  }
+  :global([data-pure-black="true"][data-theme="dark"]) & {
+    @content;
+  }
+}
+
+@mixin light {
+  :global([data-theme="light"]) &,
+  :global([data-theme="auto"]) & {
+    @media (prefers-color-scheme: light) {
+      @content;
+    }
+  }
+  :global([data-theme="light"]) & {
+    @content;
+  }
+}
+
+@mixin drag {
+  -webkit-app-region: drag;
+}
+
+@mixin no-drag {
+  -webkit-app-region: no-drag;
+}

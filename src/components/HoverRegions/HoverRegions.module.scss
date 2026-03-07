@@ -1,0 +1,110 @@
+@use "../../styles/variables" as *;
+
+.hoverRegions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  display: flex;
+  z-index: 100;
+  pointer-events: none;
+
+  .region {
+    height: 100%;
+    pointer-events: auto;
+  }
+
+  .left {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 6px;
+    padding-top: 4px;
+
+    .iconBtn {
+      padding: 2px;
+      background: transparent;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      @include no-drag;
+
+      &:hover {
+        opacity: 1 !important;
+        &.dock { color: $accent-amber; }
+      }
+    }
+
+    &:hover .iconBtn {
+      opacity: 0.6;
+      visibility: visible;
+    }
+  }
+
+  .middle {
+    width: 120px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 2px;
+    @include drag;
+
+    .dragIcon {
+      color: inherit;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+
+    &:hover .dragIcon {
+      opacity: 0.6;
+      visibility: visible;
+      color: $accent-amber;
+    }
+  }
+
+  .right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-right: 6px;
+    padding-top: 4px;
+    gap: 4px;
+
+    .iconBtn {
+      padding: 2px;
+      background: transparent;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      @include no-drag;
+
+      &:hover {
+        opacity: 1 !important;
+        &.close { color: $accent-rose; }
+        &.settings { color: $accent-amber; }
+        &.pin { color: $accent-amber; }
+      }
+
+      &.active {
+        opacity: 0.6;
+        visibility: visible;
+        color: $accent-amber;
+      }
+    }
+
+    &:hover .iconBtn {
+      opacity: 0.6;
+      visibility: visible;
+    }
+  }
+}

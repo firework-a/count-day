@@ -1,0 +1,69 @@
+@use "../../styles/variables" as *;
+
+.dockBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%; // 关键：占据整个窗口宽度 (440px)，确保鼠标移动到右侧边缘也不会触发 MouseLeave
+  height: 100%;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; // 图标始终靠左
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // 使用伪元素来渲染可视的边条
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px; // 增加到 8px，确保可见性
+    height: 100%;
+    background-color: #302922; // 使用指定的黄褐色
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+    opacity: 0.8; // 增加默认不透明度，确保颜色深沉可见
+
+    @include dark {
+      opacity: 0.9;
+    }
+  }
+
+  .expandBtn {
+    color: inherit;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    pointer-events: none;
+    
+    @include dark {
+      color: $dark-text-primary;
+    }
+  }
+
+  &.peeking {
+    color: #ffffff !important;
+
+    &::before {
+      width: 40px; 
+      background-color: #302922; // 探出时保持一致
+      opacity: 1; // 探头时全显
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    .expandBtn {
+      opacity: 1;
+      transform: translateX(0);
+      color: #ffffff;
+    }
+  }
+}

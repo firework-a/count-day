@@ -1,0 +1,53 @@
+@use "./styles/variables" as *;
+
+.widgetWrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 8px; // 增加圆角使视觉更柔和
+  @include no-drag;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.isDocked {
+    padding: 0;
+    border: none;
+    background-color: transparent !important;
+    border-radius: 0;
+    overflow: visible; // 允许内部组件溢出显示（虽然目前 DockControl 是在内部）
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background-color: inherit;
+  opacity: 0.2;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+// 设置页面的独立样式
+.settingsWrapper {
+  width: 100vw;
+  height: 100vh;
+  background-color: $bg-secondary;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: none; // Firefox
+
+  &::-webkit-scrollbar {
+    display: none; // Webkit
+  }
+
+  @include dark {
+    background-color: $dark-bg-primary;
+  }
+}
