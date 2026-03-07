@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "倒计时挂件",
+        "title": "count-day",
         "width": 440,
         "height": 120,
         "decorations": false,

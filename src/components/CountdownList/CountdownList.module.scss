@@ -3,8 +3,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow: hidden;
 }
 
 .countsList {
@@ -12,7 +10,6 @@
   align-items: center;
   gap: 20px;
   @include no-drag;
-  overflow: hidden;
 
   .countItem {
     display: flex;
@@ -25,7 +22,7 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      
+
       &.blue { color: $accent-blue; }
       &.emerald { color: $accent-emerald; }
       &.amber { color: $accent-amber; }

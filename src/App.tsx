@@ -4,6 +4,7 @@ import CountdownList from "./components/CountdownList/CountdownList";
 import HoverRegions from "./components/HoverRegions/HoverRegions";
 import DockControl from "./components/DockControl/DockControl";
 import SettingsModal from "./components/SettingsModal/SettingsModal";
+import Suggestion from "./components/Suggestion/Suggestion";
 import { UserSettings, getSettings } from "./utils/settings";
 import { HolidayData, getCachedHolidays, fetchHolidays } from "./utils/holidays";
 import { WebviewWindow, getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
@@ -237,7 +238,7 @@ function App() {
 
   // 渲染主挂件界面
   return (
-    <div 
+    <div
       className={`${styles.widgetWrapper} ${isDocked ? styles.isDocked : ""}`}
       style={{
         fontFamily: settings.appearance.fontFamily,
@@ -247,18 +248,30 @@ function App() {
       }}
     >
       {isDocked ? (
-        <DockControl 
-          onExpand={handleDockToggle} 
-          onHover={handleDockHover} 
-          onLeave={handleDockLeave} 
+        <DockControl
+          onExpand={handleDockToggle}
+          onHover={handleDockHover}
+          onLeave={handleDockLeave}
           isPeeking={isPeeking}
         />
       ) : (
         <>
-          <HoverRegions onSettingsClick={openSettingsWindow} onDockClick={handleDockToggle} />
-          <Clock />
-          <div className={styles.divider}></div>
-          <CountdownList settings={settings} holidayData={holidayData} />
+          {/* 上：工具栏区域（小） */}
+          <div className={styles.toolbar}>
+            <HoverRegions onSettingsClick={openSettingsWindow} onDockClick={handleDockToggle} />
+          </div>
+
+          {/* 中：时间和倒计时区域（最大）- 保持原有左右布局 */}
+          <div className={styles.mainContent}>
+            <Clock />
+            <div className={styles.divider}></div>
+            <CountdownList settings={settings} holidayData={holidayData} />
+          </div>
+
+          {/* 下：提示语区域（第二） */}
+          <div className={styles.footer}>
+            <Suggestion />
+          </div>
         </>
       )}
     </div>

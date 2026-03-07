@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "build:app": "pnpm tauri build",
     "lint": "oxlint .",
     "lint:fix": "oxlint . --fix"
   },

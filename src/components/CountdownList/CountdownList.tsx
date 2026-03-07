@@ -1,33 +1,23 @@
 import { useMemo } from "react";
-import { 
-  differenceInDays, 
-  setDate, 
-  addMonths, 
-  isAfter, 
-  startOfDay, 
-  differenceInSeconds, 
+import {
+  differenceInDays,
+  setDate,
+  addMonths,
+  isAfter,
+  startOfDay,
+  differenceInSeconds,
   parse,
   addDays
 } from "date-fns";
 import { CalendarDays, Rocket, Coffee } from "lucide-react";
 import { UserSettings } from "../../utils/settings";
 import { HolidayData, isWorkdayDynamic } from "../../utils/holidays";
-import Suggestion from "../Suggestion/Suggestion";
 import styles from "./CountdownList.module.scss";
 
 interface CountdownListProps {
   settings: UserSettings;
   holidayData: HolidayData | null;
 }
-
-// interface CountdownItem {
-//   label: string;
-//   value: string | number;
-//   unit: string;
-//   icon: React.ReactNode;
-//   colorClass: string;
-//   subValue?: string;
-// }
 
 const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
   const countdowns = useMemo(() => {
@@ -144,7 +134,6 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
           </div>
         ))}
       </div>
-      <Suggestion />
     </div>
   );
 };
