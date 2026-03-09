@@ -10,7 +10,14 @@
     "tauri": "tauri",
     "build:app": "pnpm tauri build",
     "lint": "oxlint .",
-    "lint:fix": "oxlint . --fix"
+    "lint:fix": "oxlint . --fix",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "cross-env CI=true oxlint --fix"
+    ]
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
@@ -21,10 +28,15 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.4.3",
+    "@commitlint/config-conventional": "^20.4.3",
     "@tauri-apps/cli": "^2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
+    "cross-env": "^10.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
     "oxlint": "^1.51.0",
     "sass-embedded": "^1.97.3",
     "typescript": "~5.8.3",

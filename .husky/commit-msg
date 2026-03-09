@@ -1,0 +1,22 @@
+npx commitlint --edit "$1" > /dev/null 2>&1 || {
+  echo ""
+  echo "❌ 提交信息格式错误！"
+  echo ""
+  echo "✅ 正确格式：type: subject"
+  echo "   例如：feat: add user login"
+  echo ""
+  echo "支持的 type:"
+  echo "  feat     新功能"
+  echo "  fix      修复 bug"
+  echo "  docs     文档修改"
+  echo "  style    代码格式修改（不影响代码运行）"
+  echo "  refactor 重构"
+  echo "  perf     性能优化"
+  echo "  test     测试相关"
+  echo "  build    构建系统或外部依赖变更"
+  echo "  ci       CI 配置文件或脚本变更"
+  echo "  chore    其他不修改源代码的变更"
+  echo "  revert   回滚提交"
+  echo ""
+  exit 1
+}
