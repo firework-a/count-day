@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import { readFileSync } from "fs";
 import { join } from "path";
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // 读取 package.json
@@ -14,9 +13,12 @@ const packageJson = JSON.parse(
 // https://vite.dev/config/
 export default defineConfig(async ({ mode }) => {
   // 根据模式加载环境变量
+  // 开发模式（dev）或测试模式（test）都启用开发者工具
+  const isDevelopment = mode === 'development' || mode === undefined;
   const isTest = mode === 'test';
   const isProduction = mode === 'production';
-  
+  const enableDevTools = isDevelopment || isTest;
+
   return {
     plugins: [react()],
 
@@ -24,15 +26,11 @@ export default defineConfig(async ({ mode }) => {
     define: {
       __APP_VERSION__: JSON.stringify(packageJson.version),
       __APP_NAME__: JSON.stringify(packageJson.name),
-      __APP_REPOSITORY__: JSON.stringify("https://github.com/firework/count-day"),
-      __APP_ISSUES__: JSON.stringify("https://github.com/firework/count-day/issues"),
+      __APP_REPOSITORY__: JSON.stringify("https://github.com/firework-a/count-day"),
+      __APP_ISSUES__: JSON.stringify("https://github.com/firework-a/count-day/issues"),
       // 暴露环境变量给应用
-      'import.meta.env.VITE_ENABLE_DEVTOOLS': JSON.stringify(
-        isTest ? 'true' : (isProduction ? 'false' : 'true')
-      ),
-      'import.meta.env.VITE_ENABLE_CONSOLE_LOG': JSON.stringify(
-        isTest ? 'true' : (isProduction ? 'false' : 'true')
-      ),
+      'import.meta.env.VITE_ENABLE_DEVTOOLS': JSON.stringify(enableDevTools),
+      'import.meta.env.VITE_ENABLE_CONSOLE_LOG': JSON.stringify(enableDevTools),
     },
 
     // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
@@ -46,10 +44,10 @@ export default defineConfig(async ({ mode }) => {
       host: host || false,
       hmr: host
         ? {
-            protocol: "ws",
-            host,
-            port: 1421,
-          }
+          protocol: "ws",
+          host,
+          port: 1421,
+        }
         : undefined,
       watch: {
         // 3. tell Vite to ignore watching `src-tauri`

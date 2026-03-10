@@ -4,8 +4,9 @@ import App from "./App";
 import "./styles/global.scss";
 
 // 根据环境变量控制是否启用开发者工具
-const enableDevTools = import.meta.env.VITE_ENABLE_DEVTOOLS === 'true';
-const enableConsoleLog = import.meta.env.VITE_ENABLE_CONSOLE_LOG === 'true';
+// Vite 的 define 会直接替换为布尔值
+const enableDevTools = import.meta.env.VITE_ENABLE_DEVTOOLS === true || import.meta.env.VITE_ENABLE_DEVTOOLS === 'true';
+const enableConsoleLog = import.meta.env.VITE_ENABLE_CONSOLE_LOG === true || import.meta.env.VITE_ENABLE_CONSOLE_LOG === 'true';
 
 // 如果禁用了控制台日志，则覆盖 console 方法
 if (!enableConsoleLog) {

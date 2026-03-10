@@ -1,12 +1,12 @@
 {
   "name": "count-day",
   "private": true,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:test": "vite --mode test",
-    "build": "node scripts/update-tauri-config.js --mode=production && tsc && vite build",
+    "dev": "node scripts/update-tauri-config.js --mode=development && vite",
+    "dev:test": "node scripts/update-tauri-config.js --mode=test && vite --mode test",
+    "build": "node scripts/update-tauri-config.js --mode=production && tsc && vite build && node scripts/generate-update-json.js",
     "build:test": "node scripts/update-tauri-config.js --mode=test && tsc && vite build --mode test",
     "preview": "vite preview",
     "tauri": "tauri",
@@ -23,8 +23,9 @@
     ]
   },
   "dependencies": {
-    "@tauri-apps/api": "^2",
+    "@tauri-apps/api": "^2.10.1",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-updater": "^2.10.0",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.577.0",
     "react": "^19.1.0",
@@ -33,7 +34,7 @@
   "devDependencies": {
     "@commitlint/cli": "^20.4.3",
     "@commitlint/config-conventional": "^20.4.3",
-    "@tauri-apps/cli": "^2",
+    "@tauri-apps/cli": "^2.10.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",

@@ -8,7 +8,7 @@ const translation: TranslationResource['translation'] = {
   'Cancel': '取消',
   'Confirm': '确认',
   'Close': '关闭',
-  
+
   // 侧边栏
   'System': '系统设置',
   'Appearance': '外观与主题',
@@ -16,7 +16,7 @@ const translation: TranslationResource['translation'] = {
   'Work': '工作与假期',
   'Custom': '自定义日期',
   'About': '关于',
-  
+
   // 系统设置
   'Startup & Updates': '启动与更新',
   'Auto Launch': '开机自启动',
@@ -31,7 +31,13 @@ const translation: TranslationResource['translation'] = {
   'Click Close Button': '点击关闭按钮时',
   'Hide to Tray': '隐藏到托盘区',
   'Quit App': '退出应用',
-  
+  'Manual Update': '手动检查更新',
+  'Manual Update Description': '立即检查是否有新版本可用',
+  'Checking...': '正在检查...',
+  'Check for Updates': '检查更新',
+  'Update Available': '发现新版本',
+  'Up to Date': '已是最新版本',
+
   // 外观与主题
   'Appearance & Theme': '外观与主题',
   'Font Family': '字体',
@@ -45,14 +51,14 @@ const translation: TranslationResource['translation'] = {
   'Auto': '自动',
   'Light': '浅色',
   'Dark': '深色',
-  
+
   // 薪资与收入
   'Salary & Income': '薪资与收入',
   'Work Days': '每月工作天数',
   'Monthly Salary': '月薪',
   'Daily Salary': '日薪',
   'Hourly Salary': '时薪',
-  
+
   // 工作与假期
   'Work & Holidays': '工作与假期',
   'Work Start Time': '上班时间',
@@ -74,16 +80,16 @@ const translation: TranslationResource['translation'] = {
   'App Description': '一款简洁优雅的倒计时挂件应用，帮助你追踪重要日期和工作时间。',
   'Version': '版本',
   'MIT License Text': '本软件基于 MIT 协议开源，您可以自由使用、修改和分发。',
-  
+
   // 提示语
   'Settings Saved': '设置已保存并同步',
-  
+
   // 主界面
   'Days until': '距离',
   'Work days left': '剩余工作日',
   'Today is': '今天是',
   'Workday': '工作日',
-  'After Work': '下班了',
+  'After Work': '非工作时段',
   'Non-working': '休息日',
   'Weekend': '休息日',
   'Holiday': '节假日',
@@ -91,7 +97,7 @@ const translation: TranslationResource['translation'] = {
   'Next Long Holiday': '下个长假',
   'Earned': '已赚窝囊费',
   'Resting...': '休息中...',
-  
+
   // 设置窗口标题
   'Settings Window Title': '倒计时挂件 - 偏好设置',
 };

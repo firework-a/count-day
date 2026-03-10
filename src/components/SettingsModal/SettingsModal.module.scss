@@ -441,6 +441,114 @@
       }
     }
   }
+
+  .updateField {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background-color: $bg-secondary;
+
+    @include dark {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border-color;
+    }
+
+    .updateHeader {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      label {
+        font-size: 13px;
+        font-weight: 700;
+        color: $text-primary;
+
+        @include dark {
+          color: $dark-text-primary;
+        }
+      }
+
+      svg {
+        color: $accent-amber;
+      }
+    }
+
+    .updateDesc {
+      font-size: 11px;
+      color: $text-secondary;
+      margin: 0;
+
+      @include dark {
+        color: $dark-text-secondary;
+      }
+    }
+
+    .checkUpdateBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background-color: $accent-amber;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      @include dark {
+        background-color: $accent-amber;
+      }
+
+      &:hover:not(:disabled) {
+        background-color: color.adjust($accent-amber, $lightness: -10%);
+        transform: translateY(-1px);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .spinning {
+        animation: spin 1s linear infinite;
+      }
+    }
+
+    .updateAvailable,
+    .updateNoAvailable,
+    .updateError {
+      font-size: 12px;
+      font-weight: 600;
+      margin: 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .updateAvailable {
+      background-color: rgba($accent-emerald, 0.1);
+      color: $accent-emerald;
+    }
+
+    .updateNoAvailable {
+      background-color: rgba($accent-blue, 0.1);
+      color: $accent-blue;
+    }
+
+    .updateError {
+      background-color: rgba(#ef4444, 0.1);
+      color: #ef4444;
+    }
+  }
 }
 
 .rangeInput {
@@ -566,6 +674,11 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateX(10px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 // About Tab Styles
