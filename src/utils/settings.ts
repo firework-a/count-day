@@ -26,6 +26,11 @@ export interface UserSettings {
     label: string;
     date: string;
   }[];
+  system: {
+    autoLaunch: boolean;
+    autoCheckUpdate: boolean;
+    language: "zh-CN" | "en-US";
+  };
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
@@ -52,6 +57,11 @@ export const DEFAULT_SETTINGS: UserSettings = {
     pureBlack: true,
   },
   customDates: [],
+  system: {
+    autoLaunch: true,
+    autoCheckUpdate: true,
+    language: "zh-CN",
+  },
 };
 
 const SETTINGS_KEY = "count-day-user-settings";
@@ -67,15 +77,19 @@ export const getSettings = (): UserSettings => {
       ...parsed,
       appearance: {
         ...DEFAULT_SETTINGS.appearance,
-        ...(parsed.appearance || {}),
+        ...parsed.appearance,
       },
       salary: {
         ...DEFAULT_SETTINGS.salary,
-        ...(parsed.salary || {}),
+        ...parsed.salary,
       },
       work: {
         ...DEFAULT_SETTINGS.work,
-        ...(parsed.work || {}),
+        ...parsed.work,
+      },
+      system: {
+        ...DEFAULT_SETTINGS.system,
+        ...parsed.system,
       }
     };
   } catch {

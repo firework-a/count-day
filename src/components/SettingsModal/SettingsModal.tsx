@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { X, Wallet, Briefcase, Calendar, Palette, Settings as SettingsIcon, CheckCircle2 } from "lucide-react";
+import { X, Wallet, Briefcase, Calendar, Palette, CheckCircle2, Settings, Info } from "lucide-react";
 import { UserSettings, saveSettings } from "../../utils/settings";
 import SalaryTab from "./tabs/SalaryTab";
 import WorkTab from "./tabs/WorkTab";
 import AppearanceTab from "./tabs/AppearanceTab";
 import CustomTab from "./tabs/CustomTab";
+import SystemTab from "./tabs/SystemTab";
+import AboutTab from "./tabs/AboutTab";
 import styles from "./SettingsModal.module.scss";
 
 interface SettingsModalProps {
@@ -14,11 +16,11 @@ interface SettingsModalProps {
   isStandalone?: boolean;
 }
 
-type TabType = "appearance" | "salary" | "work" | "custom";
+type TabType = "system" | "appearance" | "salary" | "work" | "custom" | "about";
 
 const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: SettingsModalProps) => {
   const [formData, setFormData] = useState<UserSettings>(settings);
-  const [activeTab, setActiveTab] = useState<TabType>("appearance");
+  const [activeTab, setActiveTab] = useState<TabType>("system");
   const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (section: keyof UserSettings, field: string, value: any) => {
@@ -34,11 +36,11 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
   const handleSave = () => {
     saveSettings(formData);
     onSave(formData);
-    
+
     // 显示成功反馈
     setShowSuccess(true);
-    
-    // 1.5秒后关闭或隐藏
+
+    // 1.5 秒后关闭或隐藏
     setTimeout(() => {
       setShowSuccess(false);
       onClose();
@@ -47,6 +49,8 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
 
   const renderContent = () => {
     switch (activeTab) {
+      case "system":
+        return <SystemTab formData={formData} onChange={handleChange} />;
       case "appearance":
         return <AppearanceTab formData={formData} onChange={handleChange} />;
       case "salary":
@@ -55,48 +59,60 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
         return <WorkTab formData={formData} onChange={handleChange} />;
       case "custom":
         return <CustomTab formData={formData} onChange={handleChange} />;
+      case "about":
+        return <AboutTab />;
       default:
         return null;
     }
   };
 
   return (
-    <div 
+    <div
       className={`${styles.container} ${isStandalone ? styles.standalone : ""}`}
     >
       <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <SettingsIcon size={18} />
-          <span>偏好设置</span>
-        </div>
         <nav className={styles.nav}>
-          <button 
+          <button
+            className={`${styles.navItem} ${activeTab === "system" ? styles.active : ""}`}
+            onClick={() => setActiveTab("system")}
+          >
+            <Settings size={16} />
+            <span>系统设置</span>
+          </button>
+          <button
             className={`${styles.navItem} ${activeTab === "appearance" ? styles.active : ""}`}
             onClick={() => setActiveTab("appearance")}
           >
             <Palette size={16} />
             <span>外观与主题</span>
           </button>
-          <button 
+          <button
             className={`${styles.navItem} ${activeTab === "salary" ? styles.active : ""}`}
             onClick={() => setActiveTab("salary")}
           >
             <Wallet size={16} />
             <span>薪资与收入</span>
           </button>
-          <button 
+          <button
             className={`${styles.navItem} ${activeTab === "work" ? styles.active : ""}`}
             onClick={() => setActiveTab("work")}
           >
             <Briefcase size={16} />
             <span>工作与假期</span>
           </button>
-          <button 
+          <button
             className={`${styles.navItem} ${activeTab === "custom" ? styles.active : ""}`}
             onClick={() => setActiveTab("custom")}
           >
             <Calendar size={16} />
             <span>自定义日期</span>
+          </button>
+          <button
+            className={`${styles.navItem} ${activeTab === "about" ? styles.active : ""}`}
+            onClick={() => setActiveTab("about")}
+          >
+            <Info size={16} />
+            <span>关于</span>
           </button>
         </nav>
       </aside>
@@ -109,7 +125,7 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
             </button>
           </header>
         )}
-        
+
         <div className={styles.scrollArea}>
           {renderContent()}
         </div>
