@@ -149,7 +149,25 @@ pnpm lint
 pnpm lint:fix
 ```
 
+## 🌍 环境配置
+
+项目支持多种环境配置，详见 [环境配置文档](docs/ENVIRONMENTS.md)
+
+```bash
+# 开发环境（启用开发者工具）
+pnpm tauri dev
+
+# 测试环境构建（启用开发者工具）
+pnpm build:app:test
+
+# 生产环境构建（禁用开发者工具）
+pnpm build:app
+```
+
 ## 📝 技术栈
+
+- **应用框架**
+  - Tauri 2.0
 
 - **前端**
   - React 19
@@ -160,7 +178,6 @@ pnpm lint:fix
   - Lucide Icons
 
 - **后端**
-  - Tauri 2.0
   - Rust
 
 ## 🤝 贡献
