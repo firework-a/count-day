@@ -1,5 +1,6 @@
 import { UserSettings } from "../../../utils/settings";
 import styles from "../SettingsModal.module.scss";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 interface TabProps {
   formData: UserSettings;
@@ -7,13 +8,19 @@ interface TabProps {
 }
 
 const SalaryTab = ({ formData, onChange }: TabProps) => {
+  const { t } = useTranslation(formData.system.language);
+
+  const workDaysPerMonth = formData.work.weekendMode === "double" ? 21.75 : 26;
+  const dailySalary = Math.round(formData.salary.amount / workDaysPerMonth);
+  const hourlySalary = Math.round(dailySalary / 8);
+
   return (
     <div className={styles.tabPane}>
       <div className={styles.section}>
-        <span className={styles.sectionTitle}>💰 薪资与发薪日</span>
+        <span className={styles.sectionTitle}>{t('Salary & Income')}</span>
         <div className={styles.formGroup}>
           <div className={styles.field}>
-            <label>每月发薪日</label>
+            <label>{t('Work Days')}</label>
             <input
               type="number"
               min="1"
@@ -23,12 +30,23 @@ const SalaryTab = ({ formData, onChange }: TabProps) => {
             />
           </div>
           <div className={styles.field}>
-            <label>月薪 (用于算窝囊费)</label>
+            <label>{t('Monthly Salary')}</label>
             <input
               type="number"
               value={formData.salary.amount}
               onChange={(e) => onChange("salary", "amount", parseInt(e.target.value) || 0)}
             />
+          </div>
+        </div>
+
+        <div className={styles.formGroup}>
+          <div className={styles.field}>
+            <label>{t('Daily Salary')}</label>
+            <div className={styles.infoValue}>¥{dailySalary.toLocaleString()}</div>
+          </div>
+          <div className={styles.field}>
+            <label>{t('Hourly Salary')}</label>
+            <div className={styles.infoValue}>¥{hourlySalary.toLocaleString()}</div>
           </div>
         </div>
       </div>

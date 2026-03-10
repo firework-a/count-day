@@ -13,6 +13,7 @@ import { CalendarDays, Rocket, Coffee } from "lucide-react";
 import { UserSettings } from "../../utils/settings";
 import { HolidayData, isWorkdayDynamic } from "../../utils/holidays";
 import styles from "./CountdownList.module.scss";
+import { useTranslation } from "../../hooks/useTranslation";
 
 interface CountdownListProps {
   settings: UserSettings;
@@ -21,9 +22,13 @@ interface CountdownListProps {
 
 const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
   const [now, setNow] = useState(new Date());
+  const { t, language } = useTranslation(settings.system.language);
 
   useEffect(() => {
-    // 倒计时和已赚金额每分钟更新一次即可
+    console.log("CountdownList language:", language, "settings.system.language:", settings.system.language);
+  }, [language, settings.system.language]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setNow(new Date());
     }, 60000);
@@ -37,7 +42,6 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
     let weekendDays = 0;
     let nextWeekendDay = addDays(today, 1);
 
-    // 寻找下一个非工作日
     while (isWorkdayDynamic(nextWeekendDay, holidayData)) {
       nextWeekendDay = addDays(nextWeekendDay, 1);
     }
@@ -52,7 +56,6 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
     if (isAfter(today, paydayDate)) {
       paydayDate = addMonths(paydayDate, 1);
     }
-    // const _paydayDays = differenceInDays(paydayDate, today);
 
     // 3. 下班倒计时 (分钟)
     const endTime = parse(settings.work.end, "HH:mm", now);
@@ -87,7 +90,6 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
     // 5. 寻找下一个法定长假 (使用动态数据)
     let nextHolidayStr = "--";
     if (holidayData) {
-      // 过滤出未来且 item.holiday 为 true (放假) 的日期
       const futureHolidays = holidayData.holidays
         .map((h) => parse(h, "yyyy-MM-dd", new Date()))
         .filter((h) => isAfter(h, today))
@@ -100,32 +102,32 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
 
     return [
       {
-        label: isWorking ? "下班倒计时" : "非工作时段",
+        label: isWorking ? t('Workday') : t('Non-working'),
         value: workRemainingStr,
         unit: "MIN",
         icon: <Coffee size={16} />,
         colorClass: styles.blue,
         subValue:
           isWorkdayDynamic(today, holidayData) && earnedToday > 0
-            ? `已赚窝囊费：¥${earnedToday.toFixed(2)}`
-            : "休息中...",
+            ? `¥${earnedToday.toFixed(2)}`
+            : t('Resting...'),
       },
       {
-        label: "距离周末",
+        label: t('Until Weekend'),
         value: weekendDays,
         unit: "DAYS",
         icon: <CalendarDays size={16} />,
         colorClass: styles.emerald,
       },
       {
-        label: "下个长假",
+        label: t('Next Long Holiday'),
         value: nextHolidayStr,
         unit: "DAYS",
         icon: <Rocket size={16} />,
         colorClass: styles.amber,
       },
     ];
-  }, [settings, holidayData, now]);
+  }, [settings, holidayData, now, t]);
 
   return (
     <div className={styles.container}>

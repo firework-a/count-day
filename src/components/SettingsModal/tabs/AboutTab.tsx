@@ -1,11 +1,13 @@
-import { Heart, Github, Shield, Award, Tag, Folder } from "lucide-react";
+import { Github, Shield, Award, Tag, Folder } from "lucide-react";
 import styles from "../SettingsModal.module.scss";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 interface AboutTabProps {
   version?: string;
   name?: string;
   repository?: string;
   issues?: string;
+  language?: string;
 }
 
 const AboutTab = ({
@@ -13,7 +15,10 @@ const AboutTab = ({
   name = __APP_NAME__,
   repository = __APP_REPOSITORY__,
   issues = __APP_ISSUES__,
+  language = 'zh-CN',
 }: AboutTabProps) => {
+  const { t } = useTranslation(language as 'zh-CN' | 'en-US');
+
   return (
     <div className={styles.tabPane}>
       <section className={styles.aboutSection}>
@@ -22,17 +27,17 @@ const AboutTab = ({
             <Award size={48} />
           </div>
           <h2 className={styles.appName}>{name}</h2>
-          <p className={styles.appVersion}>版本 {version}</p>
+          <p className={styles.appVersion}>{t('Version')} {version}</p>
         </div>
 
         <p className={styles.appDescription}>
-          一款简洁优雅的倒计时挂件应用，帮助你追踪重要日期和工作时间。
+          {t('App Description')}
         </p>
       </section>
 
       <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>项目信息</h3>
-
+        <h3 className={styles.sectionTitle}>{t('Project Info')}</h3>
+        
         <div className={styles.infoList}>
           <a
             href={repository}
@@ -41,9 +46,9 @@ const AboutTab = ({
             className={styles.infoItem}
           >
             <Folder size={16} />
-            <span>项目仓库</span>
+            <span>{t('Repository')}</span>
           </a>
-
+          
           <a
             href={issues}
             target="_blank"
@@ -51,9 +56,9 @@ const AboutTab = ({
             className={styles.infoItem}
           >
             <Github size={16} />
-            <span>问题反馈</span>
+            <span>{t('Issues')}</span>
           </a>
-
+          
           <a
             href={`${repository}/releases`}
             target="_blank"
@@ -61,14 +66,14 @@ const AboutTab = ({
             className={styles.infoItem}
           >
             <Tag size={16} />
-            <span>版本历史</span>
+            <span>{t('Releases')}</span>
           </a>
         </div>
       </section>
 
       <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>开源协议</h3>
-
+        <h3 className={styles.sectionTitle}>{t('License')}</h3>
+        
         <div className={styles.licenseBox}>
           <div className={styles.licenseHeader}>
             <Shield size={16} />
@@ -77,14 +82,14 @@ const AboutTab = ({
           <p className={styles.licenseText}>
             Copyright (c) 2026 Firework
             <br />
-            本软件基于 MIT 协议开源，您可以自由使用、修改和分发。
+            {t('MIT License Text')}
           </p>
         </div>
       </section>
 
       <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>技术栈</h3>
-
+        <h3 className={styles.sectionTitle}>{t('Tech Stack')}</h3>
+        
         <div className={styles.techStack}>
           <span className={styles.techTag}>Tauri</span>
           <span className={styles.techTag}>React</span>
@@ -95,9 +100,7 @@ const AboutTab = ({
       </section>
 
       <footer className={styles.aboutFooter}>
-        <span>
-          使用 <Heart size={12} className={styles.heartIcon} /> 构建
-        </span>
+        <span>{t('Built with love')}</span>
       </footer>
     </div>
   );

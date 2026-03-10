@@ -27,7 +27,8 @@ function App() {
     // 将主题和纯黑模式应用到 document 根节点
     document.documentElement.setAttribute("data-theme", settings.appearance.darkMode);
     document.documentElement.setAttribute("data-pure-black", settings.appearance.pureBlack ? "true" : "false");
-  }, [settings.appearance.darkMode, settings.appearance.pureBlack]);
+    console.log("Current language:", settings.system.language);
+  }, [settings.appearance.darkMode, settings.appearance.pureBlack, settings.system.language]);
 
   const isDarkMode = settings.appearance.darkMode === "dark" || 
     (settings.appearance.darkMode === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -263,7 +264,7 @@ function App() {
 
           {/* 中：时间和倒计时区域（最大）- 保持原有左右布局 */}
           <div className={styles.mainContent}>
-            <Clock />
+            <Clock language={settings.system.language} />
             <div className={styles.divider}></div>
             <CountdownList settings={settings} holidayData={holidayData} />
           </div>

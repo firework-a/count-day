@@ -1,5 +1,6 @@
 import { UserSettings } from "../../../utils/settings";
 import styles from "../SettingsModal.module.scss";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 interface TabProps {
   formData: UserSettings;
@@ -7,25 +8,27 @@ interface TabProps {
 }
 
 const AppearanceTab = ({ formData, onChange }: TabProps) => {
+  const { t } = useTranslation(formData.system.language);
+
   return (
     <div className={styles.tabPane}>
       <div className={styles.section}>
-        <span className={styles.sectionTitle}>🎨 外观定制</span>
+        <span className={styles.sectionTitle}>{t('Appearance & Theme')}</span>
         <div className={styles.formGroup}>
           <div className={styles.field}>
-            <label>字体族</label>
+            <label>{t('Font Family')}</label>
             <select
               value={formData.appearance.fontFamily}
               onChange={(e) => onChange("appearance", "fontFamily", e.target.value)}
             >
-              <option value="Inter, system-ui, sans-serif">默认 (Inter)</option>
+              <option value="Inter, system-ui, sans-serif">Default (Inter)</option>
               <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
               <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
-              <option value="monospace">等宽字体</option>
+              <option value="monospace">Monospace</option>
             </select>
           </div>
           <div className={styles.field}>
-            <label>字体大小 (px)</label>
+            <label>{t('Font Size')}</label>
             <input
               type="number"
               min="10"
@@ -38,7 +41,7 @@ const AppearanceTab = ({ formData, onChange }: TabProps) => {
 
         <div className={styles.formGroup}>
           <div className={styles.field} style={{ gridColumn: "span 2" }}>
-            <label>背景透明度 ({(formData.appearance.backgroundOpacity * 100).toFixed(0)}%)</label>
+            <label>{t('Background Opacity')} ({(formData.appearance.backgroundOpacity * 100).toFixed(0)}%)</label>
             <input
               type="range"
               min="0"
@@ -53,7 +56,7 @@ const AppearanceTab = ({ formData, onChange }: TabProps) => {
 
         <div className={styles.formGroup}>
           <div className={styles.field}>
-            <label>文字颜色</label>
+            <label>{t('Text Color')}</label>
             <div className={styles.colorPickerWrapper}>
               <input
                 type="color"
@@ -64,7 +67,7 @@ const AppearanceTab = ({ formData, onChange }: TabProps) => {
             </div>
           </div>
           <div className={styles.field}>
-            <label>背景颜色</label>
+            <label>{t('Background Color')}</label>
             <div className={styles.colorPickerWrapper}>
               <input
                 type="color"
@@ -78,7 +81,7 @@ const AppearanceTab = ({ formData, onChange }: TabProps) => {
 
         <div className={styles.formGroup}>
           <div className={styles.field}>
-            <label>边框颜色</label>
+            <label>{t('Border Color')}</label>
             <div className={styles.colorPickerWrapper}>
               <input
                 type="color"
@@ -89,14 +92,14 @@ const AppearanceTab = ({ formData, onChange }: TabProps) => {
             </div>
           </div>
           <div className={styles.field}>
-            <label>主题模式</label>
+            <label>{t('Dark Mode')}</label>
             <select
               value={formData.appearance.darkMode}
               onChange={(e) => onChange("appearance", "darkMode", e.target.value)}
             >
-              <option value="auto">跟随系统</option>
-              <option value="light">浅色</option>
-              <option value="dark">深色</option>
+              <option value="auto">{t('Auto')}</option>
+              <option value="light">{t('Light')}</option>
+              <option value="dark">{t('Dark')}</option>
             </select>
           </div>
         </div>
@@ -110,7 +113,7 @@ const AppearanceTab = ({ formData, onChange }: TabProps) => {
               onChange={(e) => onChange("appearance", "pureBlack", e.target.checked)}
               style={{ width: "16px", height: "16px", cursor: "pointer" }}
             />
-            <label htmlFor="pureBlack" style={{ cursor: "pointer", marginBottom: 0 }}>深色模式使用纯黑背景</label>
+            <label htmlFor="pureBlack" style={{ cursor: "pointer", marginBottom: 0 }}>{t('Pure Black')}</label>
           </div>
         </div>
       </div>

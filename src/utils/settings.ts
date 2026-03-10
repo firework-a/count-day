@@ -21,11 +21,6 @@ export interface UserSettings {
     darkMode: "auto" | "light" | "dark";
     pureBlack: boolean;
   };
-  customDates: {
-    id: string;
-    label: string;
-    date: string;
-  }[];
   system: {
     autoLaunch: boolean;
     autoCheckUpdate: boolean;
@@ -56,7 +51,6 @@ export const DEFAULT_SETTINGS: UserSettings = {
     darkMode: "auto",
     pureBlack: true,
   },
-  customDates: [],
   system: {
     autoLaunch: true,
     autoCheckUpdate: true,
@@ -71,7 +65,7 @@ export const getSettings = (): UserSettings => {
   if (!saved) return DEFAULT_SETTINGS;
   try {
     const parsed = JSON.parse(saved);
-    // 深度合并默认配置，确保新增字段（如 appearance）存在
+    // 深度合并默认配置，确保新增字段存在
     return {
       ...DEFAULT_SETTINGS,
       ...parsed,

@@ -256,6 +256,19 @@
         color: $dark-text-primary;
       }
     }
+
+    .infoValue {
+      padding: 8px 12px;
+      border-radius: 6px;
+      background-color: rgba($accent-amber, 0.1);
+      color: $accent-amber;
+      font-size: 13px;
+      font-weight: 700;
+
+      @include dark {
+        background-color: rgba($accent-amber, 0.15);
+      }
+    }
   }
 
   .toggleField {

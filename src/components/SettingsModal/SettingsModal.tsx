@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { X, Wallet, Briefcase, Calendar, Palette, CheckCircle2, Settings, Info } from "lucide-react";
+import { X, Wallet, Briefcase, Palette, CheckCircle2, Settings, Info } from "lucide-react";
 import { UserSettings, saveSettings } from "../../utils/settings";
 import SalaryTab from "./tabs/SalaryTab";
 import WorkTab from "./tabs/WorkTab";
 import AppearanceTab from "./tabs/AppearanceTab";
-import CustomTab from "./tabs/CustomTab";
 import SystemTab from "./tabs/SystemTab";
 import AboutTab from "./tabs/AboutTab";
 import styles from "./SettingsModal.module.scss";
+import { useTranslation } from "../../hooks/useTranslation";
 
 interface SettingsModalProps {
   settings: UserSettings;
@@ -16,12 +16,14 @@ interface SettingsModalProps {
   isStandalone?: boolean;
 }
 
-type TabType = "system" | "appearance" | "salary" | "work" | "custom" | "about";
+type TabType = "system" | "appearance" | "salary" | "work" | "about";
 
 const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: SettingsModalProps) => {
   const [formData, setFormData] = useState<UserSettings>(settings);
   const [activeTab, setActiveTab] = useState<TabType>("system");
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  const { t } = useTranslation(formData.system.language);
 
   const handleChange = (section: keyof UserSettings, field: string, value: any) => {
     setFormData((prev) => ({
@@ -37,10 +39,8 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
     saveSettings(formData);
     onSave(formData);
 
-    // 显示成功反馈
     setShowSuccess(true);
 
-    // 1.5 秒后关闭或隐藏
     setTimeout(() => {
       setShowSuccess(false);
       onClose();
@@ -57,10 +57,8 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
         return <SalaryTab formData={formData} onChange={handleChange} />;
       case "work":
         return <WorkTab formData={formData} onChange={handleChange} />;
-      case "custom":
-        return <CustomTab formData={formData} onChange={handleChange} />;
       case "about":
-        return <AboutTab />;
+        return <AboutTab language={formData.system.language} />;
       default:
         return null;
     }
@@ -77,42 +75,35 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
             onClick={() => setActiveTab("system")}
           >
             <Settings size={16} />
-            <span>系统设置</span>
+            <span>{t('System')}</span>
           </button>
           <button
             className={`${styles.navItem} ${activeTab === "appearance" ? styles.active : ""}`}
             onClick={() => setActiveTab("appearance")}
           >
             <Palette size={16} />
-            <span>外观与主题</span>
+            <span>{t('Appearance')}</span>
           </button>
           <button
             className={`${styles.navItem} ${activeTab === "salary" ? styles.active : ""}`}
             onClick={() => setActiveTab("salary")}
           >
             <Wallet size={16} />
-            <span>薪资与收入</span>
+            <span>{t('Salary')}</span>
           </button>
           <button
             className={`${styles.navItem} ${activeTab === "work" ? styles.active : ""}`}
             onClick={() => setActiveTab("work")}
           >
             <Briefcase size={16} />
-            <span>工作与假期</span>
-          </button>
-          <button
-            className={`${styles.navItem} ${activeTab === "custom" ? styles.active : ""}`}
-            onClick={() => setActiveTab("custom")}
-          >
-            <Calendar size={16} />
-            <span>自定义日期</span>
+            <span>{t('Work')}</span>
           </button>
           <button
             className={`${styles.navItem} ${activeTab === "about" ? styles.active : ""}`}
             onClick={() => setActiveTab("about")}
           >
             <Info size={16} />
-            <span>关于</span>
+            <span>{t('About')}</span>
           </button>
         </nav>
       </aside>
@@ -134,11 +125,11 @@ const SettingsModal = ({ settings, onClose, onSave, isStandalone = false }: Sett
           {showSuccess && (
             <div className={styles.successMessage}>
               <CheckCircle2 size={16} />
-              <span>设置已保存并同步</span>
+              <span>{t('Settings Saved')}</span>
             </div>
           )}
           <button className={styles.saveBtn} onClick={handleSave} disabled={showSuccess}>
-            {showSuccess ? "已保存" : "保存并应用"}
+            {showSuccess ? t('Saved') : t('Save')}
           </button>
         </footer>
       </main>
