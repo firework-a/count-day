@@ -376,6 +376,71 @@
       }
     }
   }
+
+  .radioField {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background-color: $bg-secondary;
+
+    @include dark {
+      background-color: $dark-bg-secondary;
+      border-color: $dark-border-color;
+    }
+
+    .radioHeader {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      label {
+        font-size: 13px;
+        font-weight: 700;
+        color: $text-primary;
+
+        @include dark {
+          color: $dark-text-primary;
+        }
+      }
+
+      svg {
+        color: $accent-amber;
+      }
+    }
+
+    .radioOptions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .radioLabel {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+
+        input[type="radio"] {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+          accent-color: $accent-amber;
+        }
+
+        span {
+          font-size: 13px;
+          font-weight: 500;
+          color: $text-primary;
+
+          @include dark {
+            color: $dark-text-primary;
+          }
+        }
+      }
+    }
+  }
 }
 
 .rangeInput {

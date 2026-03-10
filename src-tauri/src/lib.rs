@@ -1,6 +1,6 @@
 use tauri::{
     menu::{Menu, MenuItem},
-    tray::{TrayIconBuilder, TrayIconEvent},
+    tray::TrayIconBuilder,
     Manager,
 };
 
@@ -116,34 +116,52 @@ pub fn run() {
     builder
         .setup(|app| {
             let show_mi = MenuItem::with_id(app, "show", "显示主窗口", true, None::<&str>)?;
+            let settings_mi = MenuItem::with_id(app, "settings", "打开设置", true, None::<&str>)?;
             let quit_mi = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
-            let menu = Menu::with_items(app, &[&show_mi, &quit_mi])?;
+            let menu = Menu::with_items(app, &[&show_mi, &settings_mi, &quit_mi])?;
 
-            let _tray = TrayIconBuilder::new()
+            let tray = TrayIconBuilder::new()
                 .icon(app.default_window_icon().unwrap().clone())
-                .menu(&menu)
-                .on_menu_event(|app, event| match event.id.as_ref() {
+                .tooltip("count-day")
+                .build(app)?;
+            
+            // 设置菜单
+            tray.set_menu(Some(menu))?;
+            
+            // 监听菜单事件
+            tray.on_menu_event(move |app, event| {
+                match event.id.as_ref() {
                     "show" => {
                         if let Some(window) = app.get_webview_window("main") {
                             let _ = window.show();
                             let _ = window.set_focus();
                         }
                     }
+                    "settings" => {
+                        // 打开设置窗口
+                        if let Some(window) = app.get_webview_window("settings") {
+                            let _ = window.show();
+                            let _ = window.set_focus();
+                        } else {
+                            // 如果设置窗口不存在，创建一个新的
+                            let _ = tauri::WebviewWindowBuilder::new(
+                                app,
+                                "settings",
+                                tauri::WebviewUrl::App("index.html".into()),
+                            )
+                            .title("倒计时挂件 - 偏好设置")
+                            .inner_size(800.0, 600.0)
+                            .min_inner_size(600.0, 400.0)
+                            .center()
+                            .build();
+                        }
+                    }
                     "quit" => {
                         std::process::exit(0);
                     }
                     _ => {}
-                })
-                .on_tray_icon_event(|tray, event| {
-                    if let TrayIconEvent::Click { .. } = event {
-                        let app = tray.app_handle();
-                        if let Some(window) = app.get_webview_window("main") {
-                            let _ = window.show();
-                            let _ = window.set_focus();
-                        }
-                    }
-                })
-                .build(app)?;
+                }
+            });
 
             Ok(())
         })

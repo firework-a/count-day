@@ -21,7 +21,7 @@
         "resizable": false,
         "alwaysOnTop": false,
         "visible": false,
-        "skipTaskbar": false
+        "skipTaskbar": true
       },
       {
         "label": "settings",
@@ -31,7 +31,8 @@
         "decorations": true,
         "transparent": false,
         "resizable": true,
-        "visible": false
+        "visible": false,
+        "skipTaskbar": false
       }
     ],
     "security": {

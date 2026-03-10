@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, GripHorizontal, Settings, Pin, PinOff, ArrowRightToLine } from "lucide-react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { getSettings } from "../../utils/settings";
 import styles from "./HoverRegions.module.scss";
 
 interface HoverRegionsProps {
@@ -10,6 +11,7 @@ interface HoverRegionsProps {
 
 const HoverRegions = ({ onSettingsClick, onDockClick }: HoverRegionsProps) => {
   const [isAlwaysOnTopState, setIsAlwaysOnTopState] = useState(false);
+  const closeBehavior = getSettings().system.closeBehavior;
 
   useEffect(() => {
     // 初始化时获取当前的置顶状态
@@ -28,7 +30,13 @@ const HoverRegions = ({ onSettingsClick, onDockClick }: HoverRegionsProps) => {
   const handleClose = async () => {
     try {
       const appWindow = getCurrentWindow();
-      await appWindow.close();
+      if (closeBehavior === "quit") {
+        // 直接退出应用
+        await appWindow.close();
+      } else {
+        // 隐藏到托盘区
+        await appWindow.hide();
+      }
     } catch (e) {
       console.error("Failed to close window:", e);
     }

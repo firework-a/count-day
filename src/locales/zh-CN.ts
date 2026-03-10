@@ -27,6 +27,10 @@ const translation: TranslationResource['translation'] = {
   'Interface Language': '界面语言',
   'On': '开启',
   'Off': '关闭',
+  'Close Behavior': '关闭行为',
+  'Click Close Button': '点击关闭按钮时',
+  'Hide to Tray': '隐藏到托盘区',
+  'Quit App': '退出应用',
   
   // 外观与主题
   'Appearance & Theme': '外观与主题',
@@ -79,7 +83,8 @@ const translation: TranslationResource['translation'] = {
   'Work days left': '剩余工作日',
   'Today is': '今天是',
   'Workday': '工作日',
-  'Non-working': '非工作日',
+  'After Work': '下班了',
+  'Non-working': '休息日',
   'Weekend': '休息日',
   'Holiday': '节假日',
   'Until Weekend': '距离周末',

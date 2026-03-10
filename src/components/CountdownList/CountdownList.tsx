@@ -102,7 +102,9 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
 
     return [
       {
-        label: isWorking ? t('Workday') : t('Non-working'),
+        label: isWorkdayDynamic(today, holidayData) 
+          ? (isWorking ? t('Workday') : t('After Work'))
+          : t('Non-working'),
         value: workRemainingStr,
         unit: "MIN",
         icon: <Coffee size={16} />,

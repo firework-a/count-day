@@ -1,4 +1,4 @@
-import { Power, RefreshCw, Globe } from "lucide-react";
+import { Power, RefreshCw, Globe, LogOut } from "lucide-react";
 import { UserSettings } from "../../../utils/settings";
 import styles from "../SettingsModal.module.scss";
 import { enableAutoLaunch, disableAutoLaunch } from "../../../hooks/useAutoLaunch";
@@ -102,6 +102,41 @@ const SystemTab = ({ formData, onChange }: SystemTabProps) => {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>{t('Close Behavior')}</h3>
+
+        <div className={styles.formGroup}>
+          <div className={styles.radioField}>
+            <div className={styles.radioHeader}>
+              <LogOut size={16} />
+              <label>{t('Click Close Button')}</label>
+            </div>
+            <div className={styles.radioOptions}>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="closeBehavior"
+                  value="hide"
+                  checked={formData.system.closeBehavior === "hide"}
+                  onChange={(e) => onChange("system", "closeBehavior", e.target.value)}
+                />
+                <span>{t('Hide to Tray')}</span>
+              </label>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="closeBehavior"
+                  value="quit"
+                  checked={formData.system.closeBehavior === "quit"}
+                  onChange={(e) => onChange("system", "closeBehavior", e.target.value)}
+                />
+                <span>{t('Quit App')}</span>
+              </label>
+            </div>
           </div>
         </div>
       </section>

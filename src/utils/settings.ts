@@ -25,6 +25,7 @@ export interface UserSettings {
     autoLaunch: boolean;
     autoCheckUpdate: boolean;
     language: "zh-CN" | "en-US";
+    closeBehavior: "hide" | "quit";
   };
 }
 
@@ -55,6 +56,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
     autoLaunch: true,
     autoCheckUpdate: true,
     language: "zh-CN",
+    closeBehavior: "hide",
   },
 };
 
