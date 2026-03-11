@@ -30,7 +30,7 @@ const latestJson = {
   platforms: {
     'windows-x86_64': {
       signature: '',
-      url: `https://github.com/firework-a/count-day/releases/download/v${version}/count-day_${version}_x64-setup.exe`
+      url: `https://github.com/firework-a/count-day/releases/download/v${version}/count-day_x64-setup.exe`
     }
   }
 };

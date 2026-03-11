@@ -25,7 +25,12 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
   const { t, language } = useTranslation(settings.system.language);
 
   useEffect(() => {
-    console.log("CountdownList language:", language, "settings.system.language:", settings.system.language);
+    console.log(
+      "CountdownList language:",
+      language,
+      "settings.system.language:",
+      settings.system.language,
+    );
   }, [language, settings.system.language]);
 
   useEffect(() => {
@@ -68,8 +73,16 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
         if (isAfter(now, startTime)) {
           isWorking = true;
           const diffSeconds = differenceInSeconds(endTime, now);
-          const mins = Math.floor(diffSeconds / 60);
-          workRemainingStr = `${mins}`;
+          
+          // 根据设置显示不同格式
+          if (settings.work.countdownGranularity === "hourMinute") {
+            const hours = Math.floor(diffSeconds / 3600);
+            const mins = Math.floor((diffSeconds % 3600) / 60);
+            workRemainingStr = `${hours}h${mins}m`;
+          } else {
+            const mins = Math.floor(diffSeconds / 60);
+            workRemainingStr = `${mins}`;
+          }
         }
       }
     }
@@ -102,27 +115,29 @@ const CountdownList = ({ settings, holidayData }: CountdownListProps) => {
 
     return [
       {
-        label: isWorkdayDynamic(today, holidayData) 
-          ? (isWorking ? t('Workday') : t('After Work'))
-          : t('Non-working'),
+        label: isWorkdayDynamic(today, holidayData)
+          ? isWorking
+            ? t("Time Until Off Work")
+            : t("After Work")
+          : t("Non-working"),
         value: workRemainingStr,
-        unit: "MIN",
+        unit: settings.work.countdownGranularity === "hourMinute" ? "" : "MIN",
         icon: <Coffee size={16} />,
         colorClass: styles.blue,
         subValue:
           isWorkdayDynamic(today, holidayData) && earnedToday > 0
-            ? `¥${earnedToday.toFixed(2)}`
-            : t('Resting...'),
+            ? `${t("Earned")}: ¥${earnedToday.toFixed(2)}`
+            : t("Resting..."),
       },
       {
-        label: t('Until Weekend'),
+        label: t("Until Weekend"),
         value: weekendDays,
         unit: "DAYS",
         icon: <CalendarDays size={16} />,
         colorClass: styles.emerald,
       },
       {
-        label: t('Next Long Holiday'),
+        label: t("Next Long Holiday"),
         value: nextHolidayStr,
         unit: "DAYS",
         icon: <Rocket size={16} />,

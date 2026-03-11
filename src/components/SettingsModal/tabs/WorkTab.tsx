@@ -44,6 +44,35 @@ const WorkTab = ({ formData, onChange }: TabProps) => {
             </select>
           </div>
         </div>
+        <div className={styles.formGroup}>
+          <div className={styles.radioField}>
+            <div className={styles.radioHeader}>
+              <label>{t('Countdown Granularity')}</label>
+            </div>
+            <div className={styles.radioOptions}>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="countdownGranularity"
+                  value="minute"
+                  checked={formData.work.countdownGranularity === "minute"}
+                  onChange={(e) => onChange("work", "countdownGranularity", e.target.value)}
+                />
+                <span>{t('Minute')}</span>
+              </label>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="countdownGranularity"
+                  value="hourMinute"
+                  checked={formData.work.countdownGranularity === "hourMinute"}
+                  onChange={(e) => onChange("work", "countdownGranularity", e.target.value)}
+                />
+                <span>{t('Hour Minute')}</span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
       <div className={styles.section}>
         <span className={styles.sectionTitle}>{t('Show Holidays')}</span>

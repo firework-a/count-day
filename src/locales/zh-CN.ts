@@ -66,6 +66,9 @@ const translation: TranslationResource['translation'] = {
   'Weekend Mode': '休息日模式',
   'Double Weekend': '双休',
   'Single Weekend': '单休',
+  'Countdown Granularity': '倒计时精度',
+  'Minute': '分钟',
+  'Hour Minute': '小时 + 分钟',
   'Show Holidays': '显示法定节假日',
   'Holidays Description': '在倒计时中显示法定节假日调休信息',
 
@@ -88,7 +91,7 @@ const translation: TranslationResource['translation'] = {
   'Days until': '距离',
   'Work days left': '剩余工作日',
   'Today is': '今天是',
-  'Workday': '工作日',
+  'Time Until Off Work': '离下班还有',
   'After Work': '非工作时段',
   'Non-working': '休息日',
   'Weekend': '休息日',

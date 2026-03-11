@@ -6,9 +6,21 @@ import DockControl from "./components/DockControl/DockControl";
 import SettingsModal from "./components/SettingsModal/SettingsModal";
 import Suggestion from "./components/Suggestion/Suggestion";
 import { UserSettings, getSettings } from "./utils/settings";
-import { HolidayData, getCachedHolidays, fetchHolidays } from "./utils/holidays";
-import { WebviewWindow, getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
-import { LogicalPosition, getCurrentWindow, currentMonitor } from "@tauri-apps/api/window";
+import {
+  HolidayData,
+  getCachedHolidays,
+  fetchHolidays,
+} from "./utils/holidays";
+import {
+  WebviewWindow,
+  getCurrentWebviewWindow,
+} from "@tauri-apps/api/webviewWindow";
+import {
+  LogicalPosition,
+  PhysicalPosition,
+  getCurrentWindow,
+  currentMonitor,
+} from "@tauri-apps/api/window";
 import { emit, listen } from "@tauri-apps/api/event";
 import styles from "./App.module.scss";
 
@@ -21,25 +33,41 @@ function App() {
   const [isSettingsWindow, setIsSettingsWindow] = useState(false);
   const [isDocked, setIsDocked] = useState(false);
   const [isPeeking, setIsPeeking] = useState(false);
-  const [lastPosition, setLastPosition] = useState<LogicalPosition | null>(null);
+  const [lastPosition, setLastPosition] = useState<LogicalPosition | null>(
+    null,
+  );
 
   useEffect(() => {
     // 将主题和纯黑模式应用到 document 根节点
-    document.documentElement.setAttribute("data-theme", settings.appearance.darkMode);
-    document.documentElement.setAttribute("data-pure-black", settings.appearance.pureBlack ? "true" : "false");
+    document.documentElement.setAttribute(
+      "data-theme",
+      settings.appearance.darkMode,
+    );
+    document.documentElement.setAttribute(
+      "data-pure-black",
+      settings.appearance.pureBlack ? "true" : "false",
+    );
     console.log("Current language:", settings.system.language);
-  }, [settings.appearance.darkMode, settings.appearance.pureBlack, settings.system.language]);
+  }, [
+    settings.appearance.darkMode,
+    settings.appearance.pureBlack,
+    settings.system.language,
+  ]);
 
-  const isDarkMode = settings.appearance.darkMode === "dark" || 
-    (settings.appearance.darkMode === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const isDarkMode =
+    settings.appearance.darkMode === "dark" ||
+    (settings.appearance.darkMode === "auto" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   const getBackgroundColor = () => {
     if (isDarkMode) {
       // 深色模式下：如果开启纯黑则用全黑，否则用稍微浅一点的黑色（带透明度）
-      const baseColor = settings.appearance.pureBlack ? "0, 0, 0" : "24, 24, 27"; // #18181b (Zinc-900)
+      const baseColor = settings.appearance.pureBlack
+        ? "0, 0, 0"
+        : "24, 24, 27"; // #18181b (Zinc-900)
       return `rgba(${baseColor}, ${settings.appearance.backgroundOpacity})`;
     }
-    
+
     // 浅色模式下：使用用户设置的颜色
     const hex = settings.appearance.backgroundColor;
     const r = parseInt(hex.slice(1, 3), 16);
@@ -71,11 +99,11 @@ function App() {
             const { width } = monitor.size;
             const scaleFactor = monitor.scaleFactor;
             const logicalWidth = width / scaleFactor;
-            
+
             // 挂件宽度为 440，设置右边距 40
             const x = logicalWidth - 440 - 40;
             const y = 40;
-            
+
             console.log(`Positioning to: ${x}, ${y}`);
             await appWindow.setPosition(new LogicalPosition(x, y));
           }
@@ -104,12 +132,16 @@ function App() {
 
     // 使用全局监听器监听设置更新事件 (多窗口同步)
     const unlisten = listen("settings-updated", (event) => {
-      console.log("Settings updated in", currentWebviewWindow.label, event.payload);
+      console.log(
+        "Settings updated in",
+        currentWebviewWindow.label,
+        event.payload,
+      );
       setSettings(event.payload as UserSettings);
     });
 
     return () => {
-      unlisten.then(fn => fn());
+      unlisten.then((fn) => fn());
     };
   }, []);
 
@@ -135,7 +167,7 @@ function App() {
           alwaysOnTop: true, // 设置窗口建议置顶
           hiddenTitle: false,
         });
-        
+
         newWin.once("tauri://created", () => {
           console.log("Settings window created");
         });
@@ -158,22 +190,25 @@ function App() {
     try {
       const monitor = await currentMonitor();
       if (!monitor) return;
-      
+
       const { width } = monitor.size;
       const scaleFactor = monitor.scaleFactor;
       const logicalWidth = width / scaleFactor;
-      
+
+      // 使用物理像素来确保在所有 DPI 设置下露出区域一致
+      // 目标：无论屏幕尺寸和 DPI 如何，都露出 12px（物理像素）
+      const PEEK_WIDTH_PHYSICAL = 12; // 物理像素
+
       if (!isDocked) {
         // 保存当前位置
         const currentPos = await appWindow.outerPosition();
         const logicalPos = currentPos.toLogical(scaleFactor);
         setLastPosition(logicalPos);
 
-        // 收起前保存当前置顶状态，并强制置顶以便于 Hover
-        await appWindow.setAlwaysOnTop(true);
-        // 收起：缩回去，露出 10px 以保证可见性
-        const x = logicalWidth - 10;
-        await appWindow.setPosition(new LogicalPosition(x, logicalPos.y));
+        // 收起：缩回去，使用物理像素计算位置
+        // 窗口右边缘应该在屏幕右边缘左侧 PEEK_WIDTH_PHYSICAL 物理像素处
+        const physicalX = width - PEEK_WIDTH_PHYSICAL;
+        await appWindow.setPosition(new PhysicalPosition(physicalX, currentPos.y));
         setIsDocked(true);
         setIsPeeking(false);
       } else {
@@ -198,7 +233,7 @@ function App() {
       if (!monitor) return;
       const scaleFactor = monitor.scaleFactor;
       const logicalWidth = monitor.size.width / scaleFactor;
-      // 探头：移动到露出 40px 的位置
+      // 探头：移动到露出 40px 的位置（逻辑像素）
       const y = lastPosition ? lastPosition.y : 40;
       await appWindow.setPosition(new LogicalPosition(logicalWidth - 40, y));
       setIsPeeking(true);
@@ -212,11 +247,10 @@ function App() {
     try {
       const monitor = await currentMonitor();
       if (!monitor) return;
-      const scaleFactor = monitor.scaleFactor;
-      const logicalWidth = monitor.size.width / scaleFactor;
-      // 缩回去：露出 8px
+      const PEEK_WIDTH_PHYSICAL = 12;
+      const physicalX = monitor.size.width - PEEK_WIDTH_PHYSICAL;
       const y = lastPosition ? lastPosition.y : 40;
-      await appWindow.setPosition(new LogicalPosition(logicalWidth - 8, y));
+      await appWindow.setPosition(new PhysicalPosition(physicalX, y));
       setIsPeeking(false);
     } catch (e) {
       console.error("Failed to unpeek dock:", e);
@@ -227,9 +261,9 @@ function App() {
   if (isSettingsWindow) {
     return (
       <div className={styles.settingsWrapper}>
-        <SettingsModal 
-          settings={settings} 
-          onClose={() => appWindow.hide()} 
+        <SettingsModal
+          settings={settings}
+          onClose={() => appWindow.hide()}
           onSave={handleSaveSettings}
           isStandalone={true}
         />
@@ -259,7 +293,10 @@ function App() {
         <>
           {/* 上：工具栏区域（小） */}
           <div className={styles.toolbar}>
-            <HoverRegions onSettingsClick={openSettingsWindow} onDockClick={handleDockToggle} />
+            <HoverRegions
+              onSettingsClick={openSettingsWindow}
+              onDockClick={handleDockToggle}
+            />
           </div>
 
           {/* 中：时间和倒计时区域（最大）- 保持原有左右布局 */}

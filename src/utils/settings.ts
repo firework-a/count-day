@@ -7,6 +7,7 @@ export interface UserSettings {
     start: string;
     end: string;
     weekendMode: "double" | "single";
+    countdownGranularity: "minute" | "hourMinute";
   };
   holidays: {
     enabled: boolean;
@@ -38,6 +39,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
     start: "09:00",
     end: "18:00",
     weekendMode: "double",
+    countdownGranularity: "minute",
   },
   holidays: {
     enabled: true,
