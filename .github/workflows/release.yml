@@ -56,9 +56,27 @@ jobs:
           prerelease: false
           includeUpdaterJson: true
 
-      - name: Upload latest.json
+      - name: Upload latest.json for current tag
         uses: softprops/action-gh-release@v2
         with:
           files: dist/latest.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update latest.json for all historical tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          CURRENT_TAG: ${{ github.ref_name }}
+        run: |
+          # 获取所有 tag 列表（排除当前最新 tag）
+          tags=$(gh api repos/$REPO/tags --paginate --jq '.[].name' | grep '^v' | sort -V | grep -v "^${CURRENT_TAG}$")
+          
+          # 读取当前 latest.json 内容
+          latest_json=$(cat dist/latest.json)
+          
+          # 遍历所有历史 tag 并更新 latest.json 为当前最新版本的内容
+          for tag in $tags; do
+            echo "Updating $tag with latest.json from $CURRENT_TAG"
+            gh release upload "$tag" dist/latest.json --clobber
+          done
