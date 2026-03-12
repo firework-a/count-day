@@ -68,6 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           CURRENT_TAG: ${{ github.ref_name }}
+        shell: bash
         run: |
           # 获取所有 tag 列表（排除当前最新 tag）
           tags=$(gh api repos/$REPO/tags --paginate --jq '.[].name' | grep '^v' | sort -V | grep -v "^${CURRENT_TAG}$")
